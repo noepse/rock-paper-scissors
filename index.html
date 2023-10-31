@@ -2,12 +2,118 @@
 <html lang = "en">
     <head>
         <meta charset="UTF-8">
-        <table>rock paper scissors!</table>
+        <title>rock paper scissors!</title>
     </head>
     <body>
     <!-- insert UI here -->
+    <p>Type game() into console to begin</p>
         <script>
-            
+
+            function getComputerChoice(){
+                let randomNumber = Math.floor((Math.random()*3) + 1)
+
+                switch(randomNumber){
+                    case 1: 
+                    return "rock";
+                    break;
+
+                    case 2:
+                    return "paper";
+                    break;
+
+                    case 3:
+                    return "scissors";
+                    break;
+                }
+
+            }
+
+            function playRound(playerSelection, computerSelection){
+
+                if (playerSelection.toLowerCase() === computerSelection){
+                    return "Draw!"
+                }
+
+                if (playerSelection.toLowerCase() === "rock" && computerSelection === "scissors"){
+                    return "You win! Rock beats Scissors"
+                }
+
+                if (playerSelection.toLowerCase() === "scissors" && computerSelection === "paper"){
+                    return "You win! Scissors beats Paper"
+                }
+
+                if (playerSelection.toLowerCase() === "paper" && computerSelection === "rock"){
+                    return "You win! Paper beats Rock"
+                }
+
+                if (playerSelection.toLowerCase() === "scissors" && computerSelection === "rock"){
+                    return "You lose! Rock beats Scissors"
+                }
+
+                if (playerSelection.toLowerCase() === "rock" && computerSelection === "paper"){
+                    return "You lose! Paper beats Rock"
+                }
+
+                if (playerSelection.toLowerCase() === "paper" && computerSelection === "scissors"){
+                    return "You lose! Scissors beats Paper"
+                }
+
+                else {
+                    return "Error"
+                }
+            }
+
+            let playerSelection = "rock";
+            let computerSelection = "paper";
+
+            function game(){
+                let winCount = 0;
+                let loseCount = 0;
+                let drawCount = 0;
+
+                let round;
+
+                for (let i = 1; i < 6; i++){
+
+                    playerSelection = prompt('Rock, paper or scissors?');
+                    computerSelection = getComputerChoice();
+
+                    round = playRound(playerSelection, computerSelection);
+
+                    if (round.includes('Error')){
+                        i--;
+                        console.error("Please enter either rock, paper or scissors");
+                    }
+
+                    else if (round.includes("win")){
+                        winCount ++;
+                        console.log(round, winCount, loseCount, drawCount);
+                    }
+
+                    else if (round.includes("lose")){
+                        loseCount ++;
+                        console.log(round, winCount, loseCount, drawCount)
+                    }
+
+                    else if (round.includes("Draw")){
+                    drawCount ++;
+                        console.log(round, winCount, loseCount, drawCount)
+                    }
+                }
+
+                if (winCount > loseCount){
+                    return "You won!"
+                }
+
+                if (winCount < loseCount){
+                    return "You lost!"
+                }
+
+                if (winCount === loseCount){
+                    return "You drew!"
+                }
+            }
+
         </script>
     </body>
 </html>
