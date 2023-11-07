@@ -6,8 +6,26 @@
     </head>
     <body>
     <!-- insert UI here -->
-    <p>Type game() into console to begin</p>
+
+    <button id = "rock" class = "playBtn">rock</button>
+    <button id = "paper" class = "playBtn">paper</button>
+    <button id = "scissors" class = "playBtn">scissors</button>
+
+    <div id = "results"></div>
+
         <script>
+
+            const rockBtn = document.querySelector('#rock');
+            const paperBtn = document.querySelector('#paper');
+            const scissorsBtn = document.querySelector('#scissors');
+
+            const results = document.querySelector('#results');
+
+            let winCount = 0;
+            let loseCount = 0;
+            let drawCount = 0;
+            let totalCount = 0;
+            let endGame = false;
 
             function getComputerChoice(){
                 let randomNumber = Math.floor((Math.random()*3) + 1)
@@ -30,31 +48,31 @@
 
             function playRound(playerSelection, computerSelection){
 
-                if (playerSelection.toLowerCase() === computerSelection){
+                if (playerSelection === computerSelection){
                     return "Draw!"
                 }
 
-                if (playerSelection.toLowerCase() === "rock" && computerSelection === "scissors"){
+                if (playerSelection === "rock" && computerSelection === "scissors"){
                     return "You win! Rock beats Scissors"
                 }
 
-                if (playerSelection.toLowerCase() === "scissors" && computerSelection === "paper"){
+                if (playerSelection === "scissors" && computerSelection === "paper"){
                     return "You win! Scissors beats Paper"
                 }
 
-                if (playerSelection.toLowerCase() === "paper" && computerSelection === "rock"){
+                if (playerSelection === "paper" && computerSelection === "rock"){
                     return "You win! Paper beats Rock"
                 }
 
-                if (playerSelection.toLowerCase() === "scissors" && computerSelection === "rock"){
+                if (playerSelection === "scissors" && computerSelection === "rock"){
                     return "You lose! Rock beats Scissors"
                 }
 
-                if (playerSelection.toLowerCase() === "rock" && computerSelection === "paper"){
+                if (playerSelection === "rock" && computerSelection === "paper"){
                     return "You lose! Paper beats Rock"
                 }
 
-                if (playerSelection.toLowerCase() === "paper" && computerSelection === "scissors"){
+                if (playerSelection === "paper" && computerSelection === "scissors"){
                     return "You lose! Scissors beats Paper"
                 }
 
@@ -63,56 +81,93 @@
                 }
             }
 
-            let playerSelection = "rock";
-            let computerSelection = "paper";
+            let playerSelection;
 
-            function game(){
-                let winCount = 0;
-                let loseCount = 0;
-                let drawCount = 0;
+            const playGame = function game(playerSelection){
 
-                let round;
-
-                for (let i = 1; i < 6; i++){
-
-                    playerSelection = prompt('Rock, paper or scissors?');
-                    computerSelection = getComputerChoice();
-
-                    round = playRound(playerSelection, computerSelection);
-
-                    if (round.includes('Error')){
-                        i--;
-                        console.error("Please enter either rock, paper or scissors");
-                    }
-
-                    else if (round.includes("win")){
-                        winCount ++;
-                        console.log(round, winCount, loseCount, drawCount);
-                    }
-
-                    else if (round.includes("lose")){
-                        loseCount ++;
-                        console.log(round, winCount, loseCount, drawCount)
-                    }
-
-                    else if (round.includes("Draw")){
-                    drawCount ++;
-                        console.log(round, winCount, loseCount, drawCount)
-                    }
+                if (endGame === true){
+                    return
                 }
 
+                playerSelection = this.id
+                let computerSelection = getComputerChoice();
+                totalCount++;
+
+                let round = playRound(playerSelection, computerSelection);
+
+                    let roundResult = createRoundText(round, playerSelection, computerSelection);
+                    results.appendChild(roundResult)
+
+                    if (round.includes("win")){
+                        winCount ++;
+                    }
+
+                    if (round.includes("lose")){
+                        loseCount ++;
+                    }
+
+                    if (round.includes("Draw")){
+                    drawCount ++;
+                    }
+
+                checkIfGameOver();
+            }
+
+            function createRoundText(round, playerSelection, computerSelection){
+                let roundOutcome = document.createElement('p');
+                roundOutcome.innerText = `You selected ${playerSelection}, the computer chose ${computerSelection} - ${round}`
+                return roundOutcome
+            }
+
+
+            function checkWinner(){
                 if (winCount > loseCount){
                     return "You won!"
-                }
+                    }
 
-                if (winCount < loseCount){
+                    if (winCount < loseCount){
                     return "You lost!"
-                }
+                    }
 
-                if (winCount === loseCount){
+                    if (winCount === loseCount){
                     return "You drew!"
-                }
+                    }
             }
+            
+            function checkIfGameOver(){
+                if (totalCount === 5){
+                    totalCount = 0;
+
+                    let finalResult = checkWinner();
+
+                    const gameOver = document.createElement('p');
+                    gameOver.innerText = `You ${winCount} | Computer ${loseCount} | Draw ${drawCount} - ${finalResult}`;
+
+                    const resetBtn = document.createElement('button');
+                    resetBtn.innerText = 'play again'
+
+                    resetBtn.addEventListener('click', newGame);
+
+                    results.appendChild(gameOver);
+                    results.appendChild(resetBtn);
+
+                    endGame = true;
+                };
+            }
+
+            const newGame = function newGame(){
+                winCount = 0;
+                loseCount = 0;
+                drawCount = 0;
+
+                results.removeChild('p');
+                results.removeChild(gameOver);
+                results.removeChild(resetBtn);
+            }
+
+            rockBtn.addEventListener('click', playGame);
+            paperBtn.addEventListener('click', playGame);
+            scissorsBtn.addEventListener('click', playGame);
 
         </script>
     </body>
