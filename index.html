@@ -7,6 +7,8 @@
     <body>
     <!-- insert UI here -->
 
+    <h1>rock paper scissors</h1>
+    <p>choose your fighter, the first to 5 wins the game</p>
     <button id = "rock" class = "playBtn">rock</button>
     <button id = "paper" class = "playBtn">paper</button>
     <button id = "scissors" class = "playBtn">scissors</button>
@@ -26,6 +28,8 @@
             let drawCount = 0;
             let totalCount = 0;
             let endGame = false;
+
+            let playerSelection;
 
             function getComputerChoice(){
                 let randomNumber = Math.floor((Math.random()*3) + 1)
@@ -81,8 +85,6 @@
                 }
             }
 
-            let playerSelection;
-
             const playGame = function game(playerSelection){
 
                 if (endGame === true){
@@ -91,6 +93,7 @@
 
                 playerSelection = this.id
                 let computerSelection = getComputerChoice();
+                
                 totalCount++;
 
                 let round = playRound(playerSelection, computerSelection);
@@ -135,7 +138,7 @@
             }
             
             function checkIfGameOver(){
-                if (totalCount === 5){
+                if (winCount === 5 || loseCount === 5){
                     totalCount = 0;
 
                     let finalResult = checkWinner();
@@ -160,14 +163,15 @@
                 loseCount = 0;
                 drawCount = 0;
 
-                results.removeChild('p');
-                results.removeChild(gameOver);
-                results.removeChild(resetBtn);
+                results.innerHTML = '';
+
+                endGame = false;
             }
 
             rockBtn.addEventListener('click', playGame);
             paperBtn.addEventListener('click', playGame);
             scissorsBtn.addEventListener('click', playGame);
+
 
         </script>
     </body>
