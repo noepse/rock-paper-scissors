@@ -1,8 +1,12 @@
 ## rock paper scissors 🎮
 
-A browser-based game! First to 5 wins.
+A console-based game! First to 5 wins.
 
 Play it [here](https://noepse.github.io/rock-paper-scissors)
+
+### future features
+
+Design and implement an interactive UI
 
 ### contact
 
